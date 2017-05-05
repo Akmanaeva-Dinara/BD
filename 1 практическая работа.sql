@@ -1,3 +1,4 @@
+/*1*/
 CREATE TABLE t_caterer(
 id_caterer INT NOT NULL,
 name VARCHAR2(50) NOT NULL,
@@ -127,3 +128,30 @@ CONSTRAINT FK_inprice_material,
 	t_material(id_material)
 	ON DELETE CASCADE
 );
+/*2*/
+ALTER TABLE t_caterer
+  DROP COLUMN ADDRES;
+ALTER TABLE t_caterer
+  ADD (OBHI_Addres NVARCHAR2(100) NOT NULL,
+    FIZ_Addres NVARCHAR2(100) NOT NULL,
+    E_Mail NVARCHAR2(50));
+/* 3 */
+ALTER TABLE t_inprice
+  ADD CONSTRAINT PK_inprice
+    PRIMARY KEY (id_material, price_data);
+/* 4 */
+CREATE TABLE t_group(
+  id_group INT NOT NULL,
+  name NVARCHAR2(30) NOT NULL,
+  CONSTRAINT PK_group 
+    PRIMARY KEY (id_group)
+);
+ALTER TABLE t_material
+  ADD id_group INT
+  ADD CONSTRAINT FK_material_group
+      FOREIGN KEY (id_group) REFERENCES t_group(id_group) ON DELETE SET NULL;
+/* 5 */
+ALTER TABLE t_caterer
+  MODIFY (fax NVARCHAR2(30));
+ALTER TABLE t_supply
+  MODIFY (VOLUME INT CHECK (volume>= 0))
